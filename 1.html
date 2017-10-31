@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="graphDiv"></div>
+<script>
+    Plotly.d3.csv('https://raw.githubusercontent.com/forestmilan/visualisation/master/visualcorrect.csv', function(err, rows){
+    
+    function unpack(rows, key) {
+      return rows.map(function(row) { 
+        return row[key]; 
+      });
+    }
+
+    var data = [{
+      type: 'parcoords',
+      
+      line: {
+        color: unpack(rows, 'date'),
+        colorscale: 'Jet'
+
+      },
+
+
+      dimensions: [{
+        range: [0, 20000],
+        label: 'wechat_steps', 
+        
+        values: unpack(rows, 'wechat_steps')
+      }, {
+        range: [0,33000],
+        label: 'mouse_clicks',
+
+        values: unpack(rows, 'mouse_clicks')
+      }, {
+        label: 'keyboard_presses',
+        range: [0, 15000],
+        values: unpack(rows, 'keyboard_presses')
+      }, {
+        label: 'mouse_distance',
+        range: [0, 2200],
+        values: unpack(rows, 'mouse_distance')
+      }, {
+        label:'characters',
+        range:[0,8000],
+        values: unpack(rows, 'characters')   
+      }]
+    }];
+
+    var layout = {
+      width: 800, title:'Online and outdoor activities of one week'
+    };
+
+    Plotly.plot('graphDiv', data, layout);
+      
+    });
+</script>
+</body>
+</html>
